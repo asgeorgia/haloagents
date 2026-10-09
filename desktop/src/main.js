@@ -1,5 +1,7 @@
 // Halo — main process. Floating always-on-top widget, tray, global hotkey, agent IPC.
 const { app, BrowserWindow, ipcMain, Tray, Menu, globalShortcut, screen, nativeImage, shell, dialog, powerMonitor } = require('electron');
+const fs = require('fs');
+const os = require('os');
 const { autoUpdater } = require('electron-updater');
 const { startUpdates } = require('./updates');
 const { startModelOffers } = require('./model-offers');
@@ -63,6 +65,21 @@ app.on('will-quit', () => { stopCommunications?.(); modelOffers?.stop(); globalS
 app.on('window-all-closed', (e) => e.preventDefault());
 
 ipcMain.handle('settings:get', () => settings.publicSettings());
+// First-launch local-AI setup: detect Ollama so the panel can show setup steps.
+ipcMain.handle('setup:check', async () => {
+  const platform = process.platform;
+  let installed = false;
+  if (platform === 'darwin') installed = fs.existsSync('/Applications/Ollama.app');
+  else if (platform === 'win32') installed = fs.existsSync(path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Ollama', 'ollama.exe'));
+  else installed = ['/usr/local/bin/ollama', '/usr/bin/ollama', path.join(os.homedir(), '.local/bin/ollama')].some((p) => fs.existsSync(p));
+  let running = false;
+  let ollamaUrl = 'http://localhost:11434';
+  try { ollamaUrl = settings.get().ollamaUrl || ollamaUrl; } catch {}
+  try { running = (await fetch(`${ollamaUrl}/api/version`, { signal: AbortSignal.timeout(2000) })).ok; } catch {}
+  let dismissed = false;
+  try { dismissed = settings.get().setupDismissed === true; } catch {}
+  return { installed, running, platform, dismissed };
+});
 ipcMain.handle('settings:set', (_e, patch) => settings.set(patch));
 ipcMain.handle('win:minimize', () => win.hide());
 ipcMain.handle('win:compact', (_e, compact) => win.setSize(compact ? 72 : 420, compact ? 72 : 620));

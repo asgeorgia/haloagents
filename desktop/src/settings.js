@@ -13,6 +13,7 @@ const defaults = {
   cloudModel: 'claude-opus-4-1',
   keys: { anthropic: '', openai: '', openrouter: '', deepseek: '' },
   confirmDestructive: true,
+  setupDismissed: false,            // hides the first-launch local-AI setup panel
 };
 function get() {
   let saved = {}; try { saved = JSON.parse(fs.readFileSync(file(), 'utf8')); } catch {}
@@ -35,7 +36,7 @@ function get() {
 function publicSettings() { const { keys, ...cfg } = get(); return { ...cfg, keySaved: Boolean(keys[cfg.cloudProvider]) }; }
 function set(patch) {
   const current = get(); const next = { ...current };
-  for (const k of ['accessMode','localModel','cloudProvider','cloudModel','autoPullLatest','escalate','confirmDestructive','cloudInputRate','cloudOutputRate','cloudBudget']) if (Object.hasOwn(patch,k)) next[k] = patch[k];
+  for (const k of ['accessMode','localModel','cloudProvider','cloudModel','autoPullLatest','escalate','confirmDestructive','cloudInputRate','cloudOutputRate','cloudBudget','setupDismissed']) if (Object.hasOwn(patch,k)) next[k] = patch[k];
   if (!['anthropic','openai','openrouter','deepseek'].includes(next.cloudProvider)) throw new Error('Invalid provider');
   if (patch.apiKey) { vault.write('model-keys', { ...current.keys, [next.cloudProvider]: String(patch.apiKey) }); }
   const { keys, ...safe } = next;

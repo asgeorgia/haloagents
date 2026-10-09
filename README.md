@@ -9,7 +9,7 @@ Halo is a floating desktop AI agent for macOS, Windows and Linux. It starts with
 
 ## Before first use: install the free local AI engine
 
-Halo answers with a local model run by **Ollama**. Install it from https://ollama.com/download and open it once. If Ollama is missing, Halo shows a *Download Ollama* prompt instead of answering. When it is installed, Halo starts it automatically and downloads its default model (about 4.7 GB) on first use, showing progress.
+Halo answers with a local model run by **Ollama**. The first time Halo opens, it shows a setup screen with a one-click download for your operating system. If Ollama is missing, Halo shows a *Download Ollama* prompt instead of answering. When it is installed, Halo starts it automatically and downloads its default model (about 4.7 GB) on first use, showing progress.
 
 ## Current status and important limits
 
@@ -36,17 +36,22 @@ Use the installer for your operating system and processor from an actual publish
 ### macOS
 
 1. Open the matching Apple Silicon or Intel DMG and drag Halo to Applications.
-2. If macOS shows "Apple could not verify Halo", click **Done**, open **System Settings → Privacy & Security**, scroll down, click **Open Anyway** next to Halo and confirm. Or run `xattr -dr com.apple.quarantine /Applications/Halo.app` in Terminal. The warning disappears permanently once releases are signed and notarized (add the GitHub secrets `MAC_CSC_LINK`, `MAC_CSC_KEY_PASSWORD`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` from an Apple Developer account, then publish a new version).
-3. Enable System Settings → Privacy & Security → Accessibility if Halo needs to type into other applications.
-4. Automatic updates require a signed app installed in a writable location. Keep the signing identity stable across versions.
+2. Install Ollama (required, free): download it from https://ollama.com/download/mac, open the downloaded `Ollama.zip`, drag **Ollama** into Applications and open it once — a small llama icon appears in the menu bar. Or run `brew install ollama` in Terminal. Halo starts Ollama automatically when it is not running.
+3. If macOS shows "Apple could not verify Halo", click **Done**, open **System Settings → Privacy & Security**, scroll down, click **Open Anyway** next to Halo and confirm. Or run `xattr -dr com.apple.quarantine /Applications/Halo.app` in Terminal. The warning disappears permanently once releases are signed and notarized (add the GitHub secrets `MAC_CSC_LINK`, `MAC_CSC_KEY_PASSWORD`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` from an Apple Developer account, then publish a new version).
+4. Enable System Settings → Privacy & Security → Accessibility if Halo needs to type into other applications.
+5. Automatic updates require a signed app installed in a writable location. Keep the signing identity stable across versions.
 
 ### Windows
 
 1. Use the NSIS Setup installer for automatic updates.
 2. A portable EXE is available when published, but updates require manual replacement.
-3. If SmartScreen warns, verify the publisher and download source before choosing More info → Run anyway. Signing is recommended for public distribution.
+3. Install Ollama (required, free): download `OllamaSetup.exe` from https://ollama.com/download/windows and run it. Ollama then runs quietly in the background — no need to open anything; Halo starts and uses it automatically.
+4. If SmartScreen warns, verify the publisher and download source before choosing More info → Run anyway. Signing is recommended for public distribution.
 
 ### Linux
+
+1. Install Ollama (required, free): run `curl -fsSL https://ollama.com/install.sh | sh` in a terminal. This is the official installer script; it installs Ollama as a background service and needs your password. On servers or systems without systemd, download the tarball from https://ollama.com/download and extract it instead.
+2. Install Halo with one of the commands below.
 
 ```sh
 # AppImage: keep it in a directory your user can write to for automatic updates
@@ -131,7 +136,7 @@ For supported macOS/Linux systems without a published installer, use the source 
 
 ## Set up a local model
 
-1. Install Ollama from https://ollama.com and start it.
+1. Install Ollama first — see the Ollama step for your operating system under **Install Halo** above (macOS app, Windows installer, or the Linux install script).
 2. The default endpoint is `http://localhost:11434` and the default model is `qwen2.5:7b-instruct`.
 3. Optionally download the model ahead of time:
 

@@ -7,6 +7,9 @@ Halo floats above every app and does tasks for you: organizes files, writes essa
 2. `npm install`, then `npm start`.
 3. Press Ctrl/Cmd+Shift+Space to show or hide Halo. Click ⚙ for settings.
 
+## First launch
+On first open, Halo shows a setup panel with a one-click Ollama download for the current operating system (macOS app, Windows installer, or the Linux install script) and a "Check again" detection button. "Skip for now" hides the panel; reinstalling or resetting settings does not nag again until Ollama is detected or settings reset.
+
 ## Build installers
 - `npm run dist:mac` → .dmg (Apple Silicon + Intel)
 - `npm run dist:win` → .exe installer + portable
@@ -38,6 +41,7 @@ Run only the command matching your selected download, in the same session:
 # macOS DMG: drag Halo to Applications in the window that opens
 open "$HOME/Downloads/Halo/$HALO_ASSET"
 # After installation on macOS
+xattr -dr com.apple.quarantine /Applications/Halo.app
 open -a Halo
 
 # Linux AppImage: keep it writable for updates; do not run with sudo

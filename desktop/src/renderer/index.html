@@ -18,6 +18,16 @@
     <label><input type="checkbox" id="confirmDestructive"> Ask before changing files or typing</label>
     <button id="save">Save</button>
   </section>
+  <section id="setup" class="setup hidden">
+    <h3>Set up your free local AI</h3>
+    <p>Halo runs a private AI on your computer using Ollama — free, with nothing sent to the cloud.</p>
+    <p id="setupStep" class="notice"></p>
+    <div class="setup-actions">
+      <button id="setupDownload">Download Ollama</button>
+      <button id="setupCheck">Check again</button>
+      <button id="setupSkip">Skip for now</button>
+    </div>
+  </section>
   <section id="communications" class="settings hidden">
     <div class="section-heading"><strong>Contacts & tasks</strong><button id="tasksClose" title="Close tasks">×</button></div>
     <div class="task-tabs"><button id="accountTab">Accounts</button><button id="contactsTab">Contacts</button><button id="scheduleTab">Schedules</button></div>

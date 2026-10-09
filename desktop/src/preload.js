@@ -3,6 +3,8 @@ contextBridge.exposeInMainWorld('halo', {
   communications: (action, ...args) => { if (!['list','import','account','create','approve','action','suppress','refresh'].includes(action)) return Promise.reject(new Error('Invalid action')); return ipcRenderer.invoke(`communications:${action}`, ...args); },
   getSettings: () => ipcRenderer.invoke('settings:get'),
   setSettings: (p) => ipcRenderer.invoke('settings:set', p),
+  setupCheck: () => ipcRenderer.invoke('setup:check'),
+  openExternal: (u) => ipcRenderer.invoke('open:external', u),
   run: (history) => ipcRenderer.invoke('agent:run', history),
   confirm: (id, ok) => ipcRenderer.invoke('confirm:reply', id, ok),
   hide: () => ipcRenderer.invoke('win:minimize'),
