@@ -78,8 +78,16 @@ ipcMain.handle('agent:run', async (_e, history) => {
   });
   activeTasks += 1;
   try { return await runAgent(history, settings.get(), { send, confirm }); }
-  catch (err) { send('error', { message: String(err.message || err) }); return null; }
-  finally { activeTasks -= 1; }
+  catch (err) {
+    send('error', { message: String(err.message || err) });
+    if (err.code === 'OLLAMA_MISSING') {
+      const { response } = await dialog.showMessageBox(win, { type: 'info', buttons: ['Download Ollama', 'Not now'], defaultId: 0, cancelId: 1,
+        message: 'Halo needs its free local AI engine', detail: 'Install Ollama (free) and open it once. Halo will then start it automatically and download its local model on first use.' });
+      if (response === 0) shell.openExternal('https://ollama.com/download');
+    }
+    return null;
+  }
+  finally { activeTasks -= 1; send('status', { text: '' }); }
 });
 
 function communicationHandler(name, handler) {

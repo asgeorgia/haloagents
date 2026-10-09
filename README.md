@@ -7,6 +7,10 @@ Halo is a floating desktop AI agent for macOS, Windows and Linux. It starts with
 - Published releases: https://github.com/asgeorgia/haloagents/releases
 - Installation guide: https://www.haloagents.app/docs
 
+## Before first use: install the free local AI engine
+
+Halo answers with a local model run by **Ollama**. Install it from https://ollama.com/download and open it once. If Ollama is missing, Halo shows a *Download Ollama* prompt instead of answering. When it is installed, Halo starts it automatically and downloads its default model (about 4.7 GB) on first use, showing progress.
+
 ## Current status and important limits
 
 This repository contains the website and desktop application source. Installers must be built and published before release-download links work. Native installation and end-to-end updates require testing on each target operating system; passing scheduler tests alone does not establish that native updates work.

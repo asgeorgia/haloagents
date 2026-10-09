@@ -1,5 +1,5 @@
 const test=require('node:test');const assert=require('node:assert/strict');const {complete}=require('../src/models');
-const cfg={ollamaUrl:'http://localhost:11434',localModel:'local',escalate:true,keys:{openai:'secret'},cloudProvider:'openai',cloudModel:'example',cloudInputRate:1,cloudOutputRate:1,cloudBudget:1};
+const cfg={autoStartLocal:false,ollamaUrl:'http://localhost:11434',localModel:'local',escalate:true,keys:{openai:'secret'},cloudProvider:'openai',cloudModel:'example',cloudInputRate:1,cloudOutputRate:1,cloudBudget:1};
 test('Disabled, missing budget, denied and exhausted cloud approval do not call cloud',async()=>{
  const original=global.fetch;let clouds=0;
  global.fetch=async(url)=>{if(String(url).includes('api.openai.com'))clouds++;throw new Error('offline');};

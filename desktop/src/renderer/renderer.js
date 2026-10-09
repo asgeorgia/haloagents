@@ -8,6 +8,7 @@ halo.onEvent((e) => {
   if (e.type === 'result') add('step', `✓ ${e.result}`);
   if (e.type === 'final') { add('msg ai', e.text); history.push({ role: 'assistant', content: e.text }); }
   if (e.type === 'error') add('msg err', e.message);
+  if (e.type === 'status') { let s = document.getElementById('status-line'); if (!e.text) { s?.remove(); return; } if (!s) { s = add('step', ''); s.id = 'status-line'; } s.textContent = e.text; $('log').append(s); $('log').scrollTop = 1e9; }
   if (e.type === 'confirm') { const d = add('confirm', 'Allow: ' + e.summary + '\n');
     for (const [l, ok] of [['Allow', true], ['Deny', false]]) { const b = document.createElement('button'); b.textContent = l; b.onclick = () => { halo.confirm(e.id, ok); d.remove(); }; d.append(b); } }
 });
