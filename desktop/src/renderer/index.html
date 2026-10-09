@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+<link rel="stylesheet" href="styles.css"></head><body>
+<button id="orb" class="orb hidden" title="Open Halo">◎</button>
+<div id="panel" class="panel">
+  <header class="drag"><span class="logo">◎ Halo</span><span id="model" class="model">idle</span>
+    <span class="nodrag"><button id="tasksButton" title="Contacts and tasks">☷</button><button id="gear" title="Settings">⚙</button><button id="mini">–</button><button id="close">×</button></span></header>
+  <section id="settings" class="settings hidden">
+    <label>File access <select id="accessMode"><option value="minimal">Apps + Desktop/Documents/Downloads</option><option value="full">Entire file system</option></select></label>
+    <label>Local model (Ollama) <input id="localModel"></label>
+    <label><input type="checkbox" id="autoPullLatest"> Always pull latest local model</label>
+    <label><input type="checkbox" id="escalate"> Allow cloud requests with individual approval</label>
+    <label>Cloud provider <select id="cloudProvider"><option>anthropic</option><option>openai</option><option>openrouter</option><option>deepseek</option></select></label>
+    <label>Cloud model <input id="cloudModel" placeholder="claude-opus-4-1 / gpt-5 / qwen/qwen3-max"></label>
+    <label>API key <input id="apiKey" type="password" autocomplete="off" placeholder="Leave blank to keep saved key"></label>
+    <label>Cloud input USD / million tokens <input id="cloudInputRate" type="number" min="0" step="0.01"></label>
+    <label>Cloud output USD / million tokens <input id="cloudOutputRate" type="number" min="0" step="0.01"></label>
+    <label>Estimated cloud budget / task (USD) <input id="cloudBudget" type="number" min="0" step="0.01"></label>
+    <label><input type="checkbox" id="confirmDestructive"> Ask before changing files or typing</label>
+    <button id="save">Save</button>
+  </section>
+  <section id="communications" class="settings hidden">
+    <div class="section-heading"><strong>Contacts & tasks</strong><button id="tasksClose" title="Close tasks">×</button></div>
+    <div class="task-tabs"><button id="accountTab">Accounts</button><button id="contactsTab">Contacts</button><button id="scheduleTab">Schedules</button></div>
+    <p id="communicationStatus" role="status"></p>
+    <div id="accountView">
+      <label>Channel <select id="accountChannel"><option value="email">Email · SendGrid</option><option value="sms">SMS · Twilio</option><option value="whatsapp">WhatsApp · Twilio</option></select></label>
+      <div id="accountFields"></div>
+      <label><input id="senderVerified" type="checkbox"> Sender verified / registered with provider</label>
+      <label><input id="optOutConfigured" type="checkbox"> Provider unsubscribe / Advanced Opt-Out configured</label>
+      <button id="accountSave">Save account</button>
+      <p class="notice">Calendars need authorized preview access. Calls need a reachable phone service and fallback. iMessage and owner notifications are not connected.</p>
+    </div>
+    <div id="contactsView" class="hidden">
+      <button id="csvImport">Import opted-in CSV</button><p id="importReport"></p>
+      <div id="contactList"></div>
+      <label>Suppress channel <select id="suppressChannel"><option>email</option><option>sms</option><option>whatsapp</option></select></label>
+      <label>Recipient <input id="suppressAddress" placeholder="Email or +countrycode number"></label><button id="suppressSave">Suppress recipient</button>
+    </div>
+    <div id="scheduleView" class="hidden">
+      <div id="taskList"></div>
+      <h3>New message schedule</h3>
+      <label>Name <input id="taskName" maxlength="100"></label>
+      <label>Channel <select id="taskChannel"><option value="email">Email</option><option value="sms">SMS</option><option value="whatsapp">WhatsApp template</option></select></label>
+      <label>Subject (email) <input id="taskSubject" maxlength="200"></label>
+      <label>Message / approved static template text <textarea id="taskContent" rows="4" maxlength="5000"></textarea></label>
+      <label><input id="templateReviewed" type="checkbox"> WhatsApp text matches approved static template; no variables</label>
+      <label>Timezone <input id="taskTimezone" placeholder="Europe/London"></label>
+      <div class="two-columns"><label>From <input id="taskStart" type="time" value="09:00"></label><label>Until <input id="taskEnd" type="time" value="17:00"></label></div>
+      <label>Daily cap <input id="taskCap" type="number" min="1" max="1000" value="20"></label>
+      <label>Estimated upper USD / message <input id="taskCost" type="number" min="0.001" step="0.001"></label>
+      <label>Total estimated budget (USD) <input id="taskBudget" type="number" min="0.01" step="0.01"></label>
+      <p class="notice">One message per approved contact. Provider costs may differ; configure provider-side limits. Active schedules run only while Halo is open.</p>
+      <button id="taskCreate">Preview & approve</button>
+    </div>
+  </section>
+  <main id="log"></main>
+  <div class="chips"><button>Organize my Desktop, Downloads and Documents</button><button>Write an essay on climate policy in Google Docs</button><button>Find the best price for Sony WH-1000XM5</button><button>Find my resume and suggest 5 jobs to apply to</button></div>
+  <form id="form"><textarea id="input" rows="2" placeholder="Tell Halo what to do…"></textarea><button>➤</button></form>
+</div><script src="renderer.js"></script><script src="communications.js"></script></body></html>
