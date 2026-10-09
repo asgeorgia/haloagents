@@ -32,7 +32,7 @@ Use the installer for your operating system and processor from an actual publish
 ### macOS
 
 1. Open the matching Apple Silicon or Intel DMG and drag Halo to Applications.
-2. If an unsigned test build is blocked, use Finder → Applications → Halo → right-click → Open only if you trust that build. Public releases should be signed and notarized.
+2. If macOS shows "Apple could not verify Halo", click **Done**, open **System Settings → Privacy & Security**, scroll down, click **Open Anyway** next to Halo and confirm. Or run `xattr -dr com.apple.quarantine /Applications/Halo.app` in Terminal. The warning disappears permanently once releases are signed and notarized (add the GitHub secrets `MAC_CSC_LINK`, `MAC_CSC_KEY_PASSWORD`, `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` from an Apple Developer account, then publish a new version).
 3. Enable System Settings → Privacy & Security → Accessibility if Halo needs to type into other applications.
 4. Automatic updates require a signed app installed in a writable location. Keep the signing identity stable across versions.
 
