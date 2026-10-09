@@ -1,9 +1,9 @@
 <!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
 <link rel="stylesheet" href="styles.css"></head><body>
-<button id="orb" class="orb hidden" title="Open Halo">◎</button>
+<button id="orb" class="orb hidden" title="Open Halo" aria-label="Open Halo">◎</button>
 <div id="panel" class="panel">
   <header class="drag"><span class="logo">◎ Halo</span><span id="model" class="model">idle</span>
-    <span class="nodrag"><button id="tasksButton" title="Contacts and tasks">☷</button><button id="gear" title="Settings">⚙</button><button id="mini">–</button><button id="close">×</button></span></header>
+    <span class="nodrag"><button id="tasksButton" title="Contacts and tasks">☷</button><button id="gear" title="Settings">⚙</button><button id="mini" title="Minimize to screen edge" aria-label="Minimize to screen edge">–</button><button id="close" title="Hide Halo">×</button></span></header>
   <section id="settings" class="settings hidden">
     <label>File access <select id="accessMode"><option value="minimal">Apps + Desktop/Documents/Downloads</option><option value="full">Entire file system</option></select></label>
     <label>Local model (Ollama) <input id="localModel"></label>

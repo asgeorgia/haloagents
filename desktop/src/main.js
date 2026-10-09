@@ -6,6 +6,7 @@ const { autoUpdater } = require('electron-updater');
 const { startUpdates } = require('./updates');
 const { startModelOffers } = require('./model-offers');
 const path = require('path');
+const { createWindowLayout } = require('./window-layout');
 const settings = require('./settings');
 const { runAgent } = require('./agent');
 const communications = require('./communications');
@@ -14,6 +15,7 @@ tools.communication_setup = { desc: 'Open private accounts/contacts/task control
 let stopCommunications;
 
 let win, tray;
+let windowLayout;
 let updates;
 let modelOffers;
 let activeTasks = 0;
@@ -23,10 +25,12 @@ function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   win = new BrowserWindow({
     width: 420, height: 620, x: width - 440, y: height - 640,
+    minWidth: 320, minHeight: 420,
     frame: false, transparent: true, resizable: true, skipTaskbar: true,
     alwaysOnTop: true, hasShadow: true,
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false },
   });
+  windowLayout = createWindowLayout(win, screen);
   // Float above everything, including full-screen apps, on every desktop/space.
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
@@ -52,6 +56,9 @@ function refreshTray() {
 app.whenReady().then(() => {
   if (process.platform === 'darwin') app.dock?.hide();
   createWindow();
+  for (const event of ['display-added', 'display-removed', 'display-metrics-changed']) {
+    screen.on(event, () => windowLayout?.refresh());
+  }
   tray = new Tray(nativeImage.createEmpty());
   tray.setTitle?.('◎ Halo');
   tray.setToolTip('Halo agent');
@@ -82,7 +89,10 @@ ipcMain.handle('setup:check', async () => {
 });
 ipcMain.handle('settings:set', (_e, patch) => settings.set(patch));
 ipcMain.handle('win:minimize', () => win.hide());
-ipcMain.handle('win:compact', (_e, compact) => win.setSize(compact ? 72 : 420, compact ? 72 : 620));
+ipcMain.handle('win:compact', (event, compact) => {
+  if (!win || event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame) throw new Error('Invalid sender');
+  windowLayout?.setCompact(compact);
+});
 ipcMain.handle('open:external', (_e, url) => shell.openExternal(url));
 ipcMain.handle('confirm:reply', (_e, id, ok) => { pending.get(id)?.(ok); pending.delete(id); });
 

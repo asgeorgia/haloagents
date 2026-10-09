@@ -2,6 +2,11 @@ const $ = (id) => document.getElementById(id); const history = [];
 const add = (cls, text) => { const d = document.createElement('div'); d.className = cls; d.textContent = text; $('log').append(d); $('log').scrollTop = 1e9; return d; };
 async function send(text) { if (!text.trim()) return; add('msg user', text); history.push({ role: 'user', content: text }); $('input').value = ''; await halo.run(history.slice(-20)); }
 halo.onEvent((e) => {
+  if (e.type === 'window') {
+    $('panel').classList.toggle('hidden', e.compact);
+    $('orb').classList.toggle('hidden', !e.compact);
+    if (!e.compact) $('input').focus();
+  }
   if (e.type === 'communications') $('tasksButton').click();
   if (e.type === 'model') $('model').textContent = e.name;
   if (e.type === 'step') add('step', `${e.thought ? e.thought + '\n' : ''}→ ${e.tool} ${JSON.stringify(e.args)}`);
@@ -16,8 +21,8 @@ $('form').onsubmit = (ev) => { ev.preventDefault(); send($('input').value); };
 $('input').onkeydown = (ev) => { if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); send($('input').value); } };
 document.querySelectorAll('.chips button').forEach((b) => (b.onclick = () => send(b.textContent)));
 $('close').onclick = () => halo.hide();
-$('mini').onclick = () => { $('panel').classList.add('hidden'); $('orb').classList.remove('hidden'); halo.compact(true); };
-$('orb').ondblclick = $('orb').onclick = () => { $('orb').classList.add('hidden'); $('panel').classList.remove('hidden'); halo.compact(false); };
+$('mini').onclick = () => halo.compact(true).catch(e => add('msg err', e.message));
+$('orb').onclick = () => halo.compact(false).catch(e => add('msg err', e.message));
 $('gear').onclick = async () => { const s = await halo.getSettings(); $('settings').classList.toggle('hidden');
   for (const k of ['accessMode', 'localModel', 'cloudProvider', 'cloudModel', 'cloudInputRate', 'cloudOutputRate', 'cloudBudget']) $(k).value = s[k];
   for (const k of ['autoPullLatest', 'escalate', 'confirmDestructive']) $(k).checked = s[k];

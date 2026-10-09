@@ -6,6 +6,7 @@ Halo floats above every app and does tasks for you: organizes files, writes essa
 1. Install Node.js 20+ and (recommended) Ollama from https://ollama.com.
 2. `npm install`, then `npm start`.
 3. Press Ctrl/Cmd+Shift+Space to show or hide Halo. Click ⚙ for settings.
+4. Click minimize to leave a small Halo button at the right edge of your screen. Click the button to restore the previous panel size and position. Closing hides Halo without stopping active tasks.
 
 ## First launch
 On first open, Halo shows a setup panel with a one-click Ollama download for the current operating system (macOS app, Windows installer, or the Linux install script) and a "Check again" detection button. "Skip for now" hides the panel; reinstalling or resetting settings does not nag again until Ollama is detected or settings reset.

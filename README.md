@@ -149,7 +149,7 @@ Choose a model your hardware can run; memory and storage requirements vary. Init
 ## Everyday use and permissions
 
 - Ctrl/Cmd+Shift+Space shows or hides the floating panel.
-- The compact control shrinks the panel to an orb.
+- The minimize control docks a small, fixed-size Halo button at the right edge of the current screen. Click it to restore the panel to its previous size and position. The close control hides Halo; the keyboard shortcut or tray brings it back.
 - The settings control selects the model, provider and file access scope.
 - Minimal access scopes operations to the app's permitted folders; full access expands the scope. These settings are not an OS-level security sandbox.
 - Keep destructive-action confirmation enabled. Review proposed file changes and typing actions before accepting them.

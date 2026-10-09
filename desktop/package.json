@@ -1,7 +1,7 @@
 {
   "name": "halo-agent",
   "productName": "Halo",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Floating, cross-platform AI agent: local-first models with cloud escalation.",
   "main": "src/main.js",
   "author": {
